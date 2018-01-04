@@ -1,20 +1,40 @@
 <html>
   <head>
-    <title>Sample "Hello, World" Application</title>
+    <title>Bike-Vis</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <!--BOOTSTRAP-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
+
+    </script>
+    <!--./BOOTSTRAP-->
+    <script src="js/libs/vue.js"></script>
+
+    <!--Leaflet-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="js/libs/Leaflet.GoogleMutant.js"></script>
+    <!---->
+
+    <!-- 4D5057  4E6E5D  4DA167 3BC14A CFCFCF-->
+    <link rel="stylesheet" href="css/app.css">
   </head>
-  <body bgcolor=white>
+  <body>
+    <div id="control">
+      <div id="app">
+        <div class="col-xs-4">
+          <h1><img src="img/pedal.png" style="height: 60%"> BikeVIS</h1>
+        </div>
 
-    <table border="0" cellpadding="10">
-      <tr>
-        <td>
-          <img src="images/springsource.png">
-        </td>
-        <td>
-          <h1>Sample "Hello, World" Application</h1>
-        </td>
-      </tr>
-    </table>
+      </div>
+    </div>
+    <div id="line">
+    </div>
 
-    <p>This is the home page for the HelloWorld Web application. </p>
+    <div id="mapid"></div>
   </body>
+  <footer>
+    <script src="js/app.js"></script>
+  </footer>
 </html>
