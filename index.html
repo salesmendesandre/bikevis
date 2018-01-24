@@ -52,7 +52,7 @@
 
         <div class="col-md-2">
             <label>Start Day:</label>
-            <input id="startDay" class="form-control" @change="stationChanged" v-model="selectedStation">
+            <input id="startDay" class="form-control">
         </div>
 
         <div class="col-md-2">
@@ -62,16 +62,12 @@
 
         <div class="col-md-1">
             <label>Start Hour:</label>
-            <select class="form-control" @change="stationChanged" v-model="selectedStation">
-                <option></option>
-            </select>
+            <input id="startHour" class="form-control">
         </div>
 
         <div class="col-md-1">
             <label>End Hour:</label>
-            <select class="form-control" @change="stationChanged" v-model="selectedStation">
-                <option></option>
-            </select>
+            <input id="endHour" class="form-control">
         </div>
     </div>
 

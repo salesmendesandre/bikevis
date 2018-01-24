@@ -434,6 +434,10 @@ var appVue = new Vue({
         recalculate:function () {
             this.removeAllLayersWithTag("STATION");
             this.removeAllLayersWithTag("LINE");
+            if(this.selectedStation!=""){
+                var selectedStation=this.getStationByName(this.selectedStation);
+                this.map.panTo(new L.LatLng(selectedStation.lat, selectedStation.lng),{animate: true, duration: 3.0});
+            }
 
             appVue.paintAllStations();
         }
