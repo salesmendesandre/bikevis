@@ -1,3 +1,22 @@
+var greenIcon = new L.Icon({
+    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
+var orangeIcon = new L.Icon({
+    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
+
 var appVue = new Vue({
     el: '#app',
     data: {
@@ -256,12 +275,12 @@ var appVue = new Vue({
                 lng: -74.0641943,
             },
         ],
+        selectedStation: null,
         trips: [],
         stationsArray: [],
         tripsMatrix: null,
-        opacityTripsMatrix:null
-
-
+        opacityTripsMatrix: null,
+        checkedOrigin:true
     },
     methods: {
         initMap: function () {
@@ -288,18 +307,59 @@ var appVue = new Vue({
                 }
             }
         },
+        checkBoxChanged:function () {
+            this.checkedOrigin=!this.checkedOrigin;
+            this.recalculate();
+        },
         paintStation: function (station) {
-            var marker = L.marker([station.lat, station.lng]).addTo(this.map);
-            marker.id = station.id;
+            var options = {
+                id: station.id,
+                tag: "STATION"
+            };
+
+            if(station.name==this.selectedStation){
+               if(this.checkedOrigin){
+                   options.icon=greenIcon;
+               }else{
+                   options.icon=orangeIcon;
+               }
+
+            }
+
+            var marker = L.marker([station.lat, station.lng], options).addTo(this.map);
+        },
+        getLayerStation: function (id) {
+            var returnLayer = null;
+            this.map.eachLayer(function (layer) {
+                if (layer.options.id == id) {
+                    returnLayer = layer;
+                }
+            });
+            return returnLayer;
         },
         paintAllStations: function () {
             for (var i = 0; i < this.stations.length; i++) {
                 this.paintStation(this.stations[i]);
             }
         },
+
+        removeAllLayersWithTag: function (tag) {
+            this.map.eachLayer(function (layer) {
+                if (layer.options.tag == tag) {
+                    layer.remove();
+                }
+            });
+        },
         makeVectorStations: function () {
             for (var i = 0; i < this.stations.length; i++) {
                 this.stationsArray.push(this.stations[i].id);
+            }
+        },
+        getStationByName: function (_name) {
+            for (var i = 0; i < this.stations.length; i++) {
+                if (this.stations[i].name == _name) {
+                    return this.stations[i];
+                }
             }
         },
         getTrips: function () {
@@ -311,7 +371,7 @@ var appVue = new Vue({
             });
         },
         calculateTripsMatrix: function () {
-            console.log("Claculando Matrix");
+            console.log("Calculando Matrix");
             var trips = this.trips;
             var currentMatrix = matrix(this.stationsArray.length, this.stationsArray.length, 0);
             var arrayStation = this.stationsArray;
@@ -335,7 +395,7 @@ var appVue = new Vue({
                     }
                 }
             }
-            console.log("maxVal",maxVal);
+            console.log("maxVal", maxVal);
             for (var i = 0; i < opacityTripsMatrix.length; i++) {
                 for (var j = 0; j < opacityTripsMatrix[i].length; j++) {
                     opacityTripsMatrix[i][j] = opacityTripsMatrix[i][j] / maxVal;
@@ -343,33 +403,39 @@ var appVue = new Vue({
             }
             this.opacityTripsMatrix = opacityTripsMatrix;
         },
-        paintTrip: function (stationStart,stationEnd,opacity) {
-
-                var polyline = L.polyline([
+        paintTrip: function (stationStart, stationEnd, opacity) {
+            var polyline = L.polyline([
                     [stationStart.lat, stationStart.lng],
                     [stationEnd.lat, stationEnd.lng]
                 ],
                 {
                     color: 'red',
-                    weight:2,
+                    weight: 2,
                     opacity: opacity,
                     dashArray: '20,15',
                     lineJoin: 'round'
                 }
             ).addTo(this.map);
+            polyline.options.tag="LINE";
         },
         paintAllTrips: function () {
-            var stationsArray=this.stationsArray;
+            var stationsArray = this.stationsArray;
             for (var i = 5; i < stationsArray.length; i++) {
-                var startStation=this.getStation(stationsArray[i]);
+                var startStation = this.getStation(stationsArray[i]);
                 for (var j = 0; j < stationsArray.length; j++) {
-                    var endStation=this.getStation(stationsArray[j]);
-
-                    //console.log("j",endStation);
-                    this.paintTrip(startStation,endStation,this.opacityTripsMatrix[i][j])
+                    var endStation = this.getStation(stationsArray[j]);
+                    this.paintTrip(startStation, endStation, this.opacityTripsMatrix[i][j])
                 }
             }
+        },
+        stationChanged: function () {
+            this.recalculate();
+        },
+        recalculate:function () {
+            this.removeAllLayersWithTag("STATION");
+            this.removeAllLayersWithTag("LINE");
 
+            appVue.paintAllStations();
         }
     }
 });
@@ -393,13 +459,32 @@ function matrix(rows, cols, defaultValue) {
     return arr;
 }
 
-function copyMatrix(matrixCopy){
-    var copy=matrix(matrixCopy.length,matrixCopy[0].length,0);
+function copyMatrix(matrixCopy) {
+    var copy = matrix(matrixCopy.length, matrixCopy[0].length, 0);
 
-    for(var i=0;i<matrixCopy.length;i++){
-        for(var j=0;j<matrixCopy[i].length;j++){
-            copy[i][j]=matrixCopy[i][j];
+    for (var i = 0; i < matrixCopy.length; i++) {
+        for (var j = 0; j < matrixCopy[i].length; j++) {
+            copy[i][j] = matrixCopy[i][j];
         }
     }
     return copy;
 }
+
+$("[name='checkboxOD']").bootstrapSwitch({
+    on:  "  Origin   ",
+    off: 'Destination',
+    offClass: 'warning',
+    onClass: 'success'
+});
+
+$("[name='checkboxOD']").change(function() {
+    appVue.checkBoxChanged();
+});
+
+
+
+$( document ).ready(function() {
+    var options = {};
+    $('#startDay').datepicker(options);
+    $('#endDay').datepicker(options);
+});

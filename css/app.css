@@ -1,16 +1,27 @@
-
-#control {
+#control{
+    padding: 15px;
     color: #3BC14A;
+    background-color: #4D5057;
+}
+#imgLogo{
+    width: 80%;
 }
 #line{
-    height: 1%;
+    height: 5px;
     background-color: #3BC14A;
 }
 
-#control{
-    height: 10%;
-    background-color: #4D5057;
-}
+
 #mapid {
-    height: 89%;
+    height: 87%;
+    width: 100%;
+}
+#checkbox3{
+    width: 550px;
+}
+
+
+.material-datepicker{
+    left: 50% !important;
+    margin-left: -4.5em !important;
 }

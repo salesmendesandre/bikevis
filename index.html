@@ -1,6 +1,7 @@
 <html>
-  <head>
+<head>
     <title>Bike-Vis</title>
+    <link rel="icon" type="image/png" href="img/pedal.png"/>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <!--BOOTSTRAP-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -16,25 +17,67 @@
     <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
     <script src="js/libs/Leaflet.GoogleMutant.js"></script>
     <!---->
+    <script src="js/libs/bootstrap-switch.js"></script>
+    <script src="js/libs/moment.min.js"></script>
+    <script src="js/libs/knockout-3.2.0.js"></script>
+    <script src="js/libs/material.datepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/material.datepicker.css">
+
+
 
     <!-- 4D5057  4E6E5D  4DA167 3BC14A CFCFCF-->
     <link rel="stylesheet" href="css/app.css">
-  </head>
-  <body>
-    <div id="control">
-      <div id="app">
-        <div class="col-xs-4">
-          <h1><img src="img/pedal.png" style="height: 60%"> BikeVIS</h1>
+</head>
+<body>
+<div class="row" id="control">
+    <div id="app">
+        <div class="col-sm-2">
+            <img id="imgLogo" src="img/pedal2.png">
         </div>
 
-      </div>
-    </div>
-    <div id="line">
+        <div class="col-sm-2">
+            <label>Station:</label>
+            <select class="form-control" @change="stationChanged" v-model="selectedStation">
+                <option v-for="station in stations">{{station.name}}</option>
+            </select>
+        </div>
+
+        <div class="col-sm-2">
+            <label>Origin / Destination:</label>
+            <div class="clear-fix"></div>
+            <input class="form-control" type='checkbox' name='checkboxOD'  @change="checkBoxChanged" checked/>
+        </div>
+
+        <div class="col-sm-1">
+            <label>Start Day:</label>
+            <input id="startDay" class="form-control" @change="stationChanged" v-model="selectedStation">
+        </div>
+
+        <div class="col-sm-1">
+            <label>End Day:</label>
+            <input id="endDay" class="form-control">
+        </div>
+        <div class="col-sm-1">
+            <label>Start Hour:</label>
+            <select class="form-control" @change="stationChanged" v-model="selectedStation">
+                <option></option>
+            </select>
+        </div>
+
+        <div class="col-sm-1">
+            <label>End Hour:</label>
+            <select class="form-control" @change="stationChanged" v-model="selectedStation">
+                <option></option>
+            </select>
+        </div>
     </div>
 
-    <div id="mapid"></div>
-  </body>
-  <footer>
+</div>
+
+<div id="line" class="row"></div>
+<div id="mapid" class="row"></div>
+</body>
+<footer>
     <script src="js/app.js"></script>
-  </footer>
+</footer>
 </html>
