@@ -31,40 +31,43 @@
 <body>
 <div class="row" id="control">
     <div id="app">
-        <div class="col-sm-2">
-            <img id="imgLogo" src="img/pedal2.png">
+        <div class="col-md-2" >
+            <center>
+                <img id="imgLogo" src="img/pedal2.png">
+            </center>
         </div>
 
-        <div class="col-sm-2">
+        <div class="col-md-2">
             <label>Station:</label>
             <select class="form-control" @change="stationChanged" v-model="selectedStation">
                 <option v-for="station in stations">{{station.name}}</option>
             </select>
         </div>
 
-        <div class="col-sm-2">
+        <div class="col-md-2">
             <label>Origin / Destination:</label>
             <div class="clear-fix"></div>
             <input class="form-control" type='checkbox' name='checkboxOD'  @change="checkBoxChanged" checked/>
         </div>
 
-        <div class="col-sm-1">
+        <div class="col-md-2">
             <label>Start Day:</label>
             <input id="startDay" class="form-control" @change="stationChanged" v-model="selectedStation">
         </div>
 
-        <div class="col-sm-1">
+        <div class="col-md-2">
             <label>End Day:</label>
             <input id="endDay" class="form-control">
         </div>
-        <div class="col-sm-1">
+
+        <div class="col-md-1">
             <label>Start Hour:</label>
             <select class="form-control" @change="stationChanged" v-model="selectedStation">
                 <option></option>
             </select>
         </div>
 
-        <div class="col-sm-1">
+        <div class="col-md-1">
             <label>End Hour:</label>
             <select class="form-control" @change="stationChanged" v-model="selectedStation">
                 <option></option>
