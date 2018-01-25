@@ -25,3 +25,7 @@
     left: 50% !important;
     margin-left: -4.5em !important;
 }
+
+.dtp-btn-cancel{
+    margin-right: 5px;
+}

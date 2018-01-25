@@ -368,6 +368,7 @@ var appVue = new Vue({
                 appVue.calculateTripsMatrix();
                 appVue.calculateTripsOpacityMatrix();
                 appVue.paintAllTrips();
+                appVue.setControls();
             });
         },
         calculateTripsMatrix: function () {
@@ -440,6 +441,49 @@ var appVue = new Vue({
             }
 
             appVue.paintAllStations();
+        },
+        setControls:function(){
+            try{
+                var startDay=this.trips[0]['Start Time'].split(" ")[0];
+                var startDate= new Date(Number(startDay.split('/')[2]),Number(startDay.split('/')[1])-1,Number(startDay.split('/')[0]));
+                $('#startDay').val(startDay);
+                var endDay=this.trips[this.trips.length-1]['Start Time'].split(" ")[0];
+                var endDate= new Date(Number(endDay.split('/')[2]),Number(endDay.split('/')[1])-1,Number(endDay.split('/')[0]));
+                $('#endDay').val(endDay);
+
+                $('#startDay').bootstrapMaterialDatePicker
+                ({
+                    weekStart: 0, format: 'DD/MM/YYYY', shortTime : true ,time: false ,minDate: startDate
+                }).on('change', function(e, date)
+                {
+                    $('#endDay').bootstrapMaterialDatePicker('setMinDate', date);
+                });
+
+                $('#endDay').bootstrapMaterialDatePicker
+                ({
+                    weekStart: 0, format: 'DD/MM/YYYY', shortTime : true ,time: false, maxDate:endDate
+                }).on('change', function(e, date)
+                {
+                    $('#startDay').bootstrapMaterialDatePicker('setMaxDate', date);
+                });
+
+                $('#startHour').bootstrapMaterialDatePicker(
+                    { date: false, format: 'HH:mm' }
+                ).on('change', function(e, date)
+                {
+                    $('#endHour').bootstrapMaterialDatePicker('setMinDate', date);
+                });
+
+                $('#endHour').bootstrapMaterialDatePicker(
+                    { date: false, format: 'HH:mm' }
+                ).on('change', function(e, date)
+                {
+                    $('#startHour').bootstrapMaterialDatePicker('setMaxDate', date);
+                });
+            }catch (ex){
+                console.log(ex)
+            }
+
         }
     }
 });
@@ -487,8 +531,3 @@ $("[name='checkboxOD']").change(function() {
 
 
 
-$( document ).ready(function() {
-    var options = {};
-    $('#startDay').datepicker(options);
-    $('#endDay').datepicker(options);
-});

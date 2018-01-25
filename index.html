@@ -6,9 +6,12 @@
     <!--BOOTSTRAP-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
 
-    </script>
+    <link rel="stylesheet" href="./css/bootstrap-material-datetimepicker.css" />
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!--./BOOTSTRAP-->
     <script src="js/libs/vue.js"></script>
 
@@ -18,13 +21,14 @@
     <script src="js/libs/Leaflet.GoogleMutant.js"></script>
     <!---->
     <script src="js/libs/bootstrap-switch.js"></script>
-    <script src="js/libs/moment.min.js"></script>
-    <script src="js/libs/knockout-3.2.0.js"></script>
-    <script src="js/libs/material.datepicker.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/material.datepicker.css">
 
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/ripples.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/material.min.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/FezVrasta/bootstrap-material-design/master/dist/js/material.min.js"></script>
+    <script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="./js/libs/bootstrap-material-datetimepicker.js"></script>
+    <!--Date Picker-->
     <!-- 4D5057  4E6E5D  4DA167 3BC14A CFCFCF-->
     <link rel="stylesheet" href="css/app.css">
 </head>
@@ -62,15 +66,14 @@
 
         <div class="col-md-1">
             <label>Start Hour:</label>
-            <input id="startHour" class="form-control">
+            <input id="startHour" class="form-control" value="00:00">
         </div>
 
         <div class="col-md-1">
             <label>End Hour:</label>
-            <input id="endHour" class="form-control">
+            <input id="endHour" class="form-control" value="23:59">
         </div>
     </div>
-
 </div>
 
 <div id="line" class="row"></div>
