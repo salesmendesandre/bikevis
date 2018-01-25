@@ -446,6 +446,7 @@ var appVue = new Vue({
             try{
                 var startDay=this.trips[0]['Start Time'].split(" ")[0];
                 var startDate= new Date(Number(startDay.split('/')[2]),Number(startDay.split('/')[1])-1,Number(startDay.split('/')[0]));
+
                 $('#startDay').val(startDay);
                 var endDay=this.trips[this.trips.length-1]['Start Time'].split(" ")[0];
                 var endDate= new Date(Number(endDay.split('/')[2]),Number(endDay.split('/')[1])-1,Number(endDay.split('/')[0]));
@@ -453,7 +454,7 @@ var appVue = new Vue({
 
                 $('#startDay').bootstrapMaterialDatePicker
                 ({
-                    weekStart: 0, format: 'DD/MM/YYYY', shortTime : true ,time: false ,minDate: startDate
+                    weekStart: 0, format: 'DD/MM/YYYY', shortTime : true ,time: false ,minDate: startDate, maxDate:endDate
                 }).on('change', function(e, date)
                 {
                     $('#endDay').bootstrapMaterialDatePicker('setMinDate', date);
@@ -461,7 +462,7 @@ var appVue = new Vue({
 
                 $('#endDay').bootstrapMaterialDatePicker
                 ({
-                    weekStart: 0, format: 'DD/MM/YYYY', shortTime : true ,time: false, maxDate:endDate
+                    weekStart: 0, format: 'DD/MM/YYYY', shortTime : true ,time: false, minDate: startDate,maxDate:endDate
                 }).on('change', function(e, date)
                 {
                     $('#startDay').bootstrapMaterialDatePicker('setMaxDate', date);
@@ -483,7 +484,6 @@ var appVue = new Vue({
             }catch (ex){
                 console.log(ex)
             }
-
         }
     }
 });
