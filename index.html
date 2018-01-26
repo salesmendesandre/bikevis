@@ -1,6 +1,7 @@
 <html>
 <head>
     <title>Bike-Vis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="img/pedal.png"/>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <!--BOOTSTRAP-->
@@ -33,7 +34,7 @@
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-<div class="row" id="control">
+<div class="row" id="control" >
     <div id="app">
         <div class="col-md-2" >
             <center>
@@ -44,6 +45,7 @@
         <div class="col-md-2">
             <label>Station:</label>
             <select class="form-control" @change="stationChanged" v-model="selectedStation">
+                <option selected>ALL</option>
                 <option v-for="station in stations">{{station.name}}</option>
             </select>
         </div>

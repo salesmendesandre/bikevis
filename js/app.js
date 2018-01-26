@@ -20,6 +20,12 @@ var orangeIcon = new L.Icon({
 var appVue = new Vue({
     el: '#app',
     data: {
+        mapInitialConfig: {
+            lat: 40.72,
+            lng: -74.0334588,
+            zoom: 13,
+            minZoom: 2
+        },
         map: null,
         stations: [
             {
@@ -275,19 +281,19 @@ var appVue = new Vue({
                 lng: -74.0641943,
             },
         ],
-        selectedStation: null,
+        selectedStation: "ALL",
         trips: [],
         stationsArray: [],
         tripsMatrix: null,
         opacityTripsMatrix: null,
-        checkedOrigin:true
+        checkedOrigin: true
     },
     methods: {
         initMap: function () {
             this.map = L.map('mapid', {
-                center: [40.72, -74.0334588],
-                minZoom: 2,
-                zoom: 13
+                center: [this.mapInitialConfig.lat, this.mapInitialConfig.lng],
+                minZoom: this.mapInitialConfig.minZoom,
+                zoom: this.mapInitialConfig.zoom
             });
             var basemap = L.tileLayer("http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
                 maxZoom: 20,
@@ -299,60 +305,14 @@ var appVue = new Vue({
                 this.map.addLayer(basemap);
             }
         },
-        //Stations
+        /*
+         * STATION
+         */
         getStation: function (id) {
             for (var i = 0; i < this.stations.length; i++) {
                 if (this.stations[i].id == id) {
                     return this.stations[i];
                 }
-            }
-        },
-        checkBoxChanged:function () {
-            this.checkedOrigin=!this.checkedOrigin;
-            this.recalculate();
-        },
-        paintStation: function (station) {
-            var options = {
-                id: station.id,
-                tag: "STATION"
-            };
-
-            if(station.name==this.selectedStation){
-               if(this.checkedOrigin){
-                   options.icon=greenIcon;
-               }else{
-                   options.icon=orangeIcon;
-               }
-
-            }
-
-            var marker = L.marker([station.lat, station.lng], options).addTo(this.map);
-        },
-        getLayerStation: function (id) {
-            var returnLayer = null;
-            this.map.eachLayer(function (layer) {
-                if (layer.options.id == id) {
-                    returnLayer = layer;
-                }
-            });
-            return returnLayer;
-        },
-        paintAllStations: function () {
-            for (var i = 0; i < this.stations.length; i++) {
-                this.paintStation(this.stations[i]);
-            }
-        },
-
-        removeAllLayersWithTag: function (tag) {
-            this.map.eachLayer(function (layer) {
-                if (layer.options.tag == tag) {
-                    layer.remove();
-                }
-            });
-        },
-        makeVectorStations: function () {
-            for (var i = 0; i < this.stations.length; i++) {
-                this.stationsArray.push(this.stations[i].id);
             }
         },
         getStationByName: function (_name) {
@@ -362,6 +322,77 @@ var appVue = new Vue({
                 }
             }
         },
+        paintStation: function (station) {
+           if(this.selectedStation!="ALL" && this.selectedStation!=station.name){
+               if(this.checkedOrigin){
+                   if(this.totalTripsIn(station.id)==0){
+                       return;
+                   }
+               }else{
+                   if(this.totalTripsOut(station.id)==0){
+                       return;
+                   }
+               }
+           }
+
+            var options = {
+                id: station.id,
+                tag: "STATION"
+            };
+
+            if (this.selectedStation == "ALL" || station.name == this.selectedStation) {
+                if (this.checkedOrigin) {
+                    options.icon = greenIcon;
+                } else {
+                    options.icon = orangeIcon;
+                }
+            } else {
+                if (this.checkedOrigin) {
+                    options.icon = orangeIcon;
+                } else {
+                    options.icon = greenIcon;
+                }
+            }
+
+            var marker = L.marker([station.lat, station.lng], options).addTo(this.map);
+            marker.bindPopup("");
+            marker.on('click', appVue.clickStation)
+        },
+        clickStation: function (event) {
+            var marker = event.target;
+            var station = this.getStation(marker.options.id);
+
+            marker.closePopup();
+            marker._popup.setContent('<b>Name: </b>' + station.name +
+                '<br><b>Lat: </b>' + station.lat +
+                '<br><b>Lng: </b>' + station.lng +
+                '<br><b>In: </b>' + this.totalTripsIn(station.id) +
+                '<br><b>Out: </b>' + this.totalTripsOut(station.id)
+            );
+            marker.openPopup();
+
+        },
+        paintAllStations: function () {
+            for (var i = 0; i < this.stations.length; i++) {
+                this.paintStation(this.stations[i]);
+            }
+        },
+        removeAllLayersWithTag: function (tag) {
+            this.map.eachLayer(function (layer) {
+                if (layer.options.tag == tag) {
+                    layer.remove();
+                }
+            });
+        },
+        makeVectorStations: function () {//Al PRINCIPIO
+            for (var i = 0; i < this.stations.length; i++) {
+                this.stationsArray.push(this.stations[i].id);
+            }
+        },
+
+        /*
+        * TRIPS
+        */
         getTrips: function () {
             $.getJSON("https://salesmendesandre.github.io/bikevis/data/01.json", function (data) {
                 appVue.trips = data;
@@ -376,15 +407,49 @@ var appVue = new Vue({
             var trips = this.trips;
             var currentMatrix = matrix(this.stationsArray.length, this.stationsArray.length, 0);
             var arrayStation = this.stationsArray;
+            var selectedStation = this.getStationByName(this.selectedStation);
+
             for (var i = 0; i < trips.length; i++) {
                 var startStationId = trips[i]['Start Station ID'];
                 var endStationId = trips[i]['End Station ID'];
                 var startStationIndex = arrayStation.indexOf(startStationId);
                 var endStationIndex = arrayStation.indexOf(endStationId);
-                currentMatrix[startStationIndex][endStationIndex] = currentMatrix[startStationIndex][endStationIndex] + 1;
+
+                if (this.selectedStation == "ALL") {
+                    currentMatrix[startStationIndex][endStationIndex] = currentMatrix[startStationIndex][endStationIndex] + 1;
+                } else {
+                    if (this.checkedOrigin) {
+                        if (selectedStation.id == startStationId) {
+                            currentMatrix[startStationIndex][endStationIndex] = currentMatrix[startStationIndex][endStationIndex] + 1;
+                        }
+                    } else {
+                        if (selectedStation.id == endStationId) {
+                            currentMatrix[startStationIndex][endStationIndex] = currentMatrix[startStationIndex][endStationIndex] + 1;
+                        }
+                    }
+                }
             }
             this.tripsMatrix = currentMatrix;
             console.log("Fin calcular Matrix");
+        },
+
+        totalTripsIn: function (id) {
+            var station = this.getStation(id);
+            var stationIndex = this.stationsArray.indexOf(station.id);
+            var totalIn = 0;
+            for (var i = 0; i < this.stationsArray.length; i++) {
+                totalIn += this.tripsMatrix[i][stationIndex];
+            }
+            return totalIn;
+        },
+        totalTripsOut: function (id) {
+            var station = this.getStation(id);
+            var stationIndex = this.stationsArray.indexOf(station.id);
+            var totalOut = 0;
+            for (var i = 0; i < this.stationsArray.length; i++) {
+                totalOut += this.tripsMatrix[stationIndex][i];
+            }
+            return totalOut;
         },
         calculateTripsOpacityMatrix: function () {
             var opacityTripsMatrix = copyMatrix(this.tripsMatrix);
@@ -399,7 +464,9 @@ var appVue = new Vue({
             console.log("maxVal", maxVal);
             for (var i = 0; i < opacityTripsMatrix.length; i++) {
                 for (var j = 0; j < opacityTripsMatrix[i].length; j++) {
-                    opacityTripsMatrix[i][j] = opacityTripsMatrix[i][j] / maxVal;
+                    if (!opacityTripsMatrix[i][j] == 0) {
+                        opacityTripsMatrix[i][j] = opacityTripsMatrix[i][j] / maxVal;
+                    }
                 }
             }
             this.opacityTripsMatrix = opacityTripsMatrix;
@@ -410,78 +477,95 @@ var appVue = new Vue({
                     [stationEnd.lat, stationEnd.lng]
                 ],
                 {
-                    color: 'red',
+                    color: '#f00',
                     weight: 2,
-                    opacity: opacity,
-                    dashArray: '20,15',
-                    lineJoin: 'round'
+                    opacity: 0.08 + opacity * 0.92,
                 }
             ).addTo(this.map);
-            polyline.options.tag="LINE";
+            polyline.options.tag = "LINE";
         },
         paintAllTrips: function () {
+            console.log(this.opacityTripsMatrix);
             var stationsArray = this.stationsArray;
             for (var i = 5; i < stationsArray.length; i++) {
                 var startStation = this.getStation(stationsArray[i]);
                 for (var j = 0; j < stationsArray.length; j++) {
-                    var endStation = this.getStation(stationsArray[j]);
-                    this.paintTrip(startStation, endStation, this.opacityTripsMatrix[i][j])
+                    if (this.opacityTripsMatrix[i][j] != 0) {
+                        var endStation = this.getStation(stationsArray[j]);
+                        this.paintTrip(startStation, endStation, this.opacityTripsMatrix[i][j])
+                    }
+
                 }
             }
         },
         stationChanged: function () {
             this.recalculate();
         },
-        recalculate:function () {
+        checkBoxChanged: function () {
+            this.checkedOrigin = !this.checkedOrigin;
+            this.recalculate();
+        },
+        recalculate: function () {
             this.removeAllLayersWithTag("STATION");
             this.removeAllLayersWithTag("LINE");
-            if(this.selectedStation!=""){
-                var selectedStation=this.getStationByName(this.selectedStation);
-                this.map.panTo(new L.LatLng(selectedStation.lat, selectedStation.lng),{animate: true, duration: 3.0});
+            if (this.selectedStation == "ALL") {
+                this.map.setView(new L.LatLng(this.mapInitialConfig.lat, this.mapInitialConfig.lng), this.mapInitialConfig.zoom);
+            } else {
+                var selectedStation = this.getStationByName(this.selectedStation);
+                this.map.setView(new L.LatLng(selectedStation.lat, selectedStation.lng), this.mapInitialConfig.zoom + 1);
             }
 
+            appVue.calculateTripsMatrix();
+            appVue.calculateTripsOpacityMatrix();
             appVue.paintAllStations();
+            appVue.paintAllTrips();
         },
-        setControls:function(){
-            try{
-                var startDay=this.trips[0]['Start Time'].split(" ")[0];
-                var startDate= new Date(Number(startDay.split('/')[2]),Number(startDay.split('/')[1])-1,Number(startDay.split('/')[0]));
+        setControls: function () {
+            try {
+                var startDay = this.trips[0]['Start Time'].split(" ")[0];
+                var startDate = new Date(Number(startDay.split('/')[2]), Number(startDay.split('/')[1]) - 1, Number(startDay.split('/')[0]));
 
                 $('#startDay').val(startDay);
-                var endDay=this.trips[this.trips.length-1]['Start Time'].split(" ")[0];
-                var endDate= new Date(Number(endDay.split('/')[2]),Number(endDay.split('/')[1])-1,Number(endDay.split('/')[0]));
+                var endDay = this.trips[this.trips.length - 1]['Start Time'].split(" ")[0];
+                var endDate = new Date(Number(endDay.split('/')[2]), Number(endDay.split('/')[1]) - 1, Number(endDay.split('/')[0]));
                 $('#endDay').val(endDay);
 
                 $('#startDay').bootstrapMaterialDatePicker
                 ({
-                    weekStart: 0, format: 'DD/MM/YYYY', shortTime : true ,time: false ,minDate: startDate, maxDate:endDate
-                }).on('change', function(e, date)
-                {
+                    weekStart: 0,
+                    format: 'DD/MM/YYYY',
+                    shortTime: true,
+                    time: false,
+                    minDate: startDate,
+                    maxDate: endDate
+                }).on('change', function (e, date) {
                     $('#endDay').bootstrapMaterialDatePicker('setMinDate', date);
                 });
 
                 $('#endDay').bootstrapMaterialDatePicker
                 ({
-                    weekStart: 0, format: 'DD/MM/YYYY', shortTime : true ,time: false, minDate: startDate,maxDate:endDate
-                }).on('change', function(e, date)
-                {
+                    weekStart: 0,
+                    format: 'DD/MM/YYYY',
+                    shortTime: true,
+                    time: false,
+                    minDate: startDate,
+                    maxDate: endDate
+                }).on('change', function (e, date) {
                     $('#startDay').bootstrapMaterialDatePicker('setMaxDate', date);
                 });
 
                 $('#startHour').bootstrapMaterialDatePicker(
-                    { date: false, format: 'HH:mm' }
-                ).on('change', function(e, date)
-                {
+                    {date: false, format: 'HH:mm'}
+                ).on('change', function (e, date) {
                     $('#endHour').bootstrapMaterialDatePicker('setMinDate', date);
                 });
 
                 $('#endHour').bootstrapMaterialDatePicker(
-                    { date: false, format: 'HH:mm' }
-                ).on('change', function(e, date)
-                {
+                    {date: false, format: 'HH:mm'}
+                ).on('change', function (e, date) {
                     $('#startHour').bootstrapMaterialDatePicker('setMaxDate', date);
                 });
-            }catch (ex){
+            } catch (ex) {
                 console.log(ex)
             }
         }
@@ -519,15 +603,12 @@ function copyMatrix(matrixCopy) {
 }
 
 $("[name='checkboxOD']").bootstrapSwitch({
-    on:  "  Origin   ",
+    on: "  Origin   ",
     off: 'Destination',
     offClass: 'warning',
     onClass: 'success'
 });
 
-$("[name='checkboxOD']").change(function() {
+$("[name='checkboxOD']").change(function () {
     appVue.checkBoxChanged();
 });
-
-
-
