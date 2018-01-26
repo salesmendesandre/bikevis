@@ -323,17 +323,17 @@ var appVue = new Vue({
             }
         },
         paintStation: function (station) {
-           if(this.selectedStation!="ALL" && this.selectedStation!=station.name){
-               if(this.checkedOrigin){
-                   if(this.totalTripsIn(station.id)==0){
-                       return;
-                   }
-               }else{
-                   if(this.totalTripsOut(station.id)==0){
-                       return;
-                   }
-               }
-           }
+            if (this.selectedStation != "ALL" && this.selectedStation != station.name) {
+                if (this.checkedOrigin) {
+                    if (this.totalTripsIn(station.id) == 0) {
+                        return;
+                    }
+                } else {
+                    if (this.totalTripsOut(station.id) == 0) {
+                        return;
+                    }
+                }
+            }
 
             var options = {
                 id: station.id,
@@ -370,7 +370,6 @@ var appVue = new Vue({
                 '<br><b>Out: </b>' + this.totalTripsOut(station.id)
             );
             marker.openPopup();
-
         },
         paintAllStations: function () {
             for (var i = 0; i < this.stations.length; i++) {
@@ -396,10 +395,10 @@ var appVue = new Vue({
         getTrips: function () {
             $.getJSON("https://salesmendesandre.github.io/bikevis/data/01.json", function (data) {
                 appVue.trips = data;
+                appVue.setControls();
                 appVue.calculateTripsMatrix();
                 appVue.calculateTripsOpacityMatrix();
                 appVue.paintAllTrips();
-                appVue.setControls();
             });
         },
         calculateTripsMatrix: function () {
@@ -409,22 +408,42 @@ var appVue = new Vue({
             var arrayStation = this.stationsArray;
             var selectedStation = this.getStationByName(this.selectedStation);
 
-            for (var i = 0; i < trips.length; i++) {
-                var startStationId = trips[i]['Start Station ID'];
-                var endStationId = trips[i]['End Station ID'];
-                var startStationIndex = arrayStation.indexOf(startStationId);
-                var endStationIndex = arrayStation.indexOf(endStationId);
+            var startSelectedDay = $('#startDay').val();
+            var startSelectedHour = $('#startHour').val();
+            var startSelectedDate = new Date(startSelectedDay.split('/')[2], startSelectedDay.split('/')[1] - 1, startSelectedDay.split('/')[0]);
 
-                if (this.selectedStation == "ALL") {
-                    currentMatrix[startStationIndex][endStationIndex] = currentMatrix[startStationIndex][endStationIndex] + 1;
-                } else {
-                    if (this.checkedOrigin) {
-                        if (selectedStation.id == startStationId) {
+            var endSelectedDay = $('#endDay').val();
+            var endSelectedHour = $('#endHour').val();
+            var endSelectedDate = new Date(endSelectedDay.split('/')[2], endSelectedDay.split('/')[1] - 1, endSelectedDay.split('/')[0]);
+
+            for (var i = 0; i < trips.length; i++) {
+                var tripStartDay = trips[i]["Start Time"].split(" ")[0];
+                var tripStartHour = trips[i]["Start Time"].split(" ")[1];
+                var tripStartDate = new Date(tripStartDay.split('/')[2], tripStartDay.split('/')[1] - 1, tripStartDay.split('/')[0]);
+
+                var tripEndDay = trips[i]["Stop Time"].split(" ")[0];
+                var tripEndHour = trips[i]["Stop Time"].split(" ")[1];
+                var tripEndDate = new Date(tripEndDay.split('/')[2], tripEndDay.split('/')[1] - 1, tripEndDay.split('/')[0]);
+
+                if (startSelectedDate < tripStartDate && tripEndDate < endSelectedDate) {
+                    if (startSelectedHour < tripStartHour && tripEndHour < endSelectedHour) {
+                        var startStationId = trips[i]['Start Station ID'];
+                        var endStationId = trips[i]['End Station ID'];
+                        var startStationIndex = arrayStation.indexOf(startStationId);
+                        var endStationIndex = arrayStation.indexOf(endStationId);
+
+                        if (this.selectedStation == "ALL") {
                             currentMatrix[startStationIndex][endStationIndex] = currentMatrix[startStationIndex][endStationIndex] + 1;
-                        }
-                    } else {
-                        if (selectedStation.id == endStationId) {
-                            currentMatrix[startStationIndex][endStationIndex] = currentMatrix[startStationIndex][endStationIndex] + 1;
+                        } else {
+                            if (this.checkedOrigin) {
+                                if (selectedStation.id == startStationId) {
+                                    currentMatrix[startStationIndex][endStationIndex] = currentMatrix[startStationIndex][endStationIndex] + 1;
+                                }
+                            } else {
+                                if (selectedStation.id == endStationId) {
+                                    currentMatrix[startStationIndex][endStationIndex] = currentMatrix[startStationIndex][endStationIndex] + 1;
+                                }
+                            }
                         }
                     }
                 }
@@ -485,7 +504,6 @@ var appVue = new Vue({
             polyline.options.tag = "LINE";
         },
         paintAllTrips: function () {
-            console.log(this.opacityTripsMatrix);
             var stationsArray = this.stationsArray;
             for (var i = 5; i < stationsArray.length; i++) {
                 var startStation = this.getStation(stationsArray[i]);
@@ -506,6 +524,7 @@ var appVue = new Vue({
             this.recalculate();
         },
         recalculate: function () {
+            console.log("RECALCULANDO");
             this.removeAllLayersWithTag("STATION");
             this.removeAllLayersWithTag("LINE");
             if (this.selectedStation == "ALL") {
@@ -540,6 +559,7 @@ var appVue = new Vue({
                     maxDate: endDate
                 }).on('change', function (e, date) {
                     $('#endDay').bootstrapMaterialDatePicker('setMinDate', date);
+                    appVue.recalculate();
                 });
 
                 $('#endDay').bootstrapMaterialDatePicker
@@ -552,18 +572,21 @@ var appVue = new Vue({
                     maxDate: endDate
                 }).on('change', function (e, date) {
                     $('#startDay').bootstrapMaterialDatePicker('setMaxDate', date);
+                    appVue.recalculate();
                 });
 
                 $('#startHour').bootstrapMaterialDatePicker(
                     {date: false, format: 'HH:mm'}
                 ).on('change', function (e, date) {
                     $('#endHour').bootstrapMaterialDatePicker('setMinDate', date);
+                    appVue.recalculate();
                 });
 
                 $('#endHour').bootstrapMaterialDatePicker(
                     {date: false, format: 'HH:mm'}
                 ).on('change', function (e, date) {
                     $('#startHour').bootstrapMaterialDatePicker('setMaxDate', date);
+                    appVue.recalculate();
                 });
             } catch (ex) {
                 console.log(ex)
