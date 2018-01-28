@@ -42,38 +42,42 @@
             </center>
         </div>
 
-        <div class="col-md-2">
-            <label>Station:</label>
-            <select class="form-control" @change="stationChanged" v-model="selectedStation">
-                <option selected>ALL</option>
-                <option v-for="station in stations">{{station.name}}</option>
-            </select>
+        <div class="col-md-4">
+            <div class="col-md-6">
+                <label>Station:</label>
+                <select class="form-control" @change="stationChanged" v-model="selectedStation">
+                    <option selected>ALL</option>
+                    <option v-for="station in stations">{{station.name}}</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label>Origin / Destination:</label>
+                <div class="clear-fix"></div>
+                <input class="form-control" type='checkbox' name='checkboxOD'  @change="checkBoxChanged" checked/>
+            </div>
         </div>
 
-        <div class="col-md-2">
-            <label>Origin / Destination:</label>
-            <div class="clear-fix"></div>
-            <input class="form-control" type='checkbox' name='checkboxOD'  @change="checkBoxChanged" checked/>
-        </div>
+        <div class="col-md-6">
+            <div class="col-md-3">
+                <label>Start Day:</label>
+                <input id="startDay" class="form-control" >
+            </div>
 
-        <div class="col-md-2">
-            <label>Start Day:</label>
-            <input id="startDay" class="form-control" >
-        </div>
+            <div class="col-md-3">
+                <label>End Day:</label>
+                <input id="endDay" class="form-control" >
+            </div>
 
-        <div class="col-md-2">
-            <label>End Day:</label>
-            <input id="endDay" class="form-control" >
-        </div>
+            <div class="col-md-3">
+                <label>Start Hour</label>
+                <input id="startHour" class="form-control" value="00:00">
+            </div>
 
-        <div class="col-md-1">
-            <label>Start Hour:</label>
-            <input id="startHour" class="form-control" value="00:00">
-        </div>
-
-        <div class="col-md-1">
-            <label>End Hour:</label>
-            <input id="endHour" class="form-control" value="23:59">
+            <div class="col-md-3">
+                <label>End Hour</label>
+                <input id="endHour" class="form-control" value="23:59">
+            </div>
         </div>
     </div>
 </div>
