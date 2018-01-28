@@ -403,7 +403,9 @@ var appVue = new Vue({
                 appVue.setControls();
                 appVue.calculateTripsMatrix();
                 appVue.calculateTripsOpacityMatrix();
+                appVue.paintAllStations();
                 appVue.paintAllTrips();
+
             });
         },
         calculateTripsMatrix: function () {
@@ -603,7 +605,6 @@ var appVue = new Vue({
 appVue.initMap();
 appVue.makeVectorStations();
 appVue.getTrips();
-appVue.paintAllStations();
 
 
 //TOOLS
