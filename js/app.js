@@ -363,11 +363,16 @@ var appVue = new Vue({
             var station = this.getStation(marker.options.id);
 
             marker.closePopup();
-            marker._popup.setContent('<b>Name: </b>' + station.name +
-                '<br><b>Lat: </b>' + station.lat +
-                '<br><b>Lng: </b>' + station.lng +
-                '<br><b>In: </b>' + this.totalTripsIn(station.id) +
-                '<br><b>Out: </b>' + this.totalTripsOut(station.id)
+            marker._popup.setContent('' +
+                '<div style="width: 250px;">' +
+                '   <h3>'+ station.name +'</h3>'+
+                '   <h5><b>Position:</b></h5>'+
+                '       <h6 style="margin-left: 15px"><b>Lat: </b>' + station.lat + '</h6>'+
+                '       <h6 style="margin-left: 15px"><b> Lng: </b>' + station.lng +'</h6>'+
+                '   <h5><b>Trips:</b></h5>' +
+                '       <h5 style="margin-left: 15px"><img src="img/sign-in.png" style="width: 20px"> ' + this.totalTripsIn(station.id) +'</h5>'+
+                '       <h5 style="margin-left: 15px"><img src="img/sign-out.png" style="width: 20px"> ' + this.totalTripsOut(station.id) +'</h5>'+
+                '</div>'
             );
             marker.openPopup();
         },
