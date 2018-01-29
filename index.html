@@ -23,7 +23,6 @@
     <!---->
     <script src="js/libs/bootstrap-switch.js"></script>
 
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/ripples.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/material.min.js"></script>
     
@@ -43,7 +42,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <label>Station:</label>
                 <select class="form-control" @change="stationChanged" v-model="selectedStation">
                     <option selected>ALL</option>
@@ -51,7 +50,7 @@
                 </select>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <label>Origin/Destination:</label>
                 <div class="clear-fix"></div>
                 <input class="form-control" type='checkbox' name='checkboxOD'  @change="checkBoxChanged" checked/>

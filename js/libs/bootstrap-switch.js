@@ -48,9 +48,9 @@
 			var c = $(this);
 			var disabled = c.is(":disabled") ? " disabled" : "";
 
-			var div = $('<div class="btn-group btn-toggle" style="white-space: nowrap; width: 30px;"></div>').insertAfter(this);
-			var on = $('<button class="btn btn-primary '+settings.size+disabled+'" style="float: none;display: inline-block; width: 70x;" ></button>').html(settings.on).css('margin-right', '0px').appendTo(div);
-			var off = $('<button class="btn btn-danger '+settings.size+disabled+'" style="float: none;display: inline-block; width: 70px;"></button>').html(settings.off).css('margin-left', '0px').appendTo(div);
+			var div = $('<div class="btn-group btn-toggle" style="white-space: nowrap; width: 25px;"></div>').insertAfter(this);
+			var on = $('<button class="btn btn-primary '+settings.size+disabled+'" style="float: none;display: inline-block; width: 100px;" ></button>').html(settings.on).css('margin-right', '0px').appendTo(div);
+			var off = $('<button class="btn btn-danger '+settings.size+disabled+'" style="float: none;display: inline-block; width: 100px;"></button>').html(settings.off).css('margin-left', '0px').appendTo(div);
 
 			function applyChange(b) {
 				if(b) {
