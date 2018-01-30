@@ -27,260 +27,7 @@ var appVue = new Vue({
             minZoom: 2
         },
         map: null,
-        stations: [
-            {
-                id: 173,
-                name: "Broadway & W 49 St",
-                lat: 40.76068327,
-                lng: -73.98452729,
-            },
-            {
-                id: 225,
-                name: "W 14 St & The High Line",
-                lat: 40.74195138,
-                lng: -74.00803013,
-            },
-            {
-                id: 351,
-                name: "Front St & Maiden Ln",
-                lat: 40.70530954,
-                lng: -74.00612572,
-            },
-            {
-                id: 363,
-                name: "West Thames St",
-                lat: 40.70834698,
-                lng: -74.01713445,
-            },
-            {
-                id: 390,
-                name: "Duffield St & Willoughby St",
-                lat: 40.69221589,
-                lng: -73.9842844,
-            },
-            {
-                id: 501,
-                name: "FDR Drive & E 35 St",
-                lat: 40.744219,
-                lng: -73.97121214,
-            },
-            {
-                id: 514,
-                name: "12 Ave & W 40 St",
-                lat: 40.76087502,
-                lng: -74.00277668,
-            },
-            {
-                id: 3183,
-                name: "Exchange Place",
-                lat: 40.7162469,
-                lng: -74.0334588,
-            },
-            {
-                id: 3184,
-                name: "Paulus Hook",
-                lat: 40.7141454,
-                lng: -74.0335519,
-            },
-            {
-                id: 3185,
-                name: "City Hall",
-                lat: 40.7177325,
-                lng: -74.043845,
-            },
-            {
-                id: 3186,
-                name: "Grove St PATH",
-                lat: 40.71958612,
-                lng: -74.04311746,
-            },
-            {
-                id: 3187,
-                name: "Warren St",
-                lat: 40.7211236,
-                lng: -74.03805095,
-            },
-            {
-                id: 3188,
-                name: "NJCU",
-                lat: 40.7101087,
-                lng: -74.0858489,
-            },
-            {
-                id: 3189,
-                name: "West Side Light Rail",
-                lat: 40.714402,
-                lng: -74.0887723,
-            },
-            {
-                id: 3190,
-                name: "Garfield Ave Station",
-                lat: 40.71046702,
-                lng: -74.0700388,
-            },
-            {
-                id: 3191,
-                name: "Union St",
-                lat: 40.7182113,
-                lng: -74.0836394,
-            },
-            {
-                id: 3192,
-                name: "Liberty Light Rail",
-                lat: 40.7112423,
-                lng: -74.0557013,
-            },
-            {
-                id: 3193,
-                name: "Lincoln Park",
-                lat: 40.7246051,
-                lng: -74.07840595,
-            },
-            {
-                id: 3194,
-                name: "McGinley Square",
-                lat: 40.72533993,
-                lng: -74.06762213,
-            },
-            {
-                id: 3195,
-                name: "Sip Ave",
-                lat: 40.73074263,
-                lng: -74.06378388,
-            },
-            {
-                id: 3196,
-                name: "Riverview Park",
-                lat: 40.7443187,
-                lng: -74.0439909,
-            },
-            {
-                id: 3197,
-                name: "North St",
-                lat: 40.752559,
-                lng: -74.044725,
-            },
-            {
-                id: 3198,
-                name: "Heights Elevator",
-                lat: 40.74871595,
-                lng: -74.0404433,
-            },
-            {
-                id: 3199,
-                name: "Newport Pkwy",
-                lat: 40.7287448,
-                lng: -74.0321082,
-            },
-            {
-                id: 3200,
-                name: "MLK Light Rail",
-                lat: 40.7111305,
-                lng: -74.0788855,
-            },
-            {
-                id: 3201,
-                name: "Dey St",
-                lat: 40.737711,
-                lng: -74.066921,
-            },
-            {
-                id: 3202,
-                name: "Newport PATH",
-                lat: 40.7272235,
-                lng: -74.0337589,
-            },
-            {
-                id: 3203,
-                name: "Hamilton Park",
-                lat: 40.72759597,
-                lng: -74.04424731,
-            },
-            {
-                id: 3205,
-                name: "JC Medical Center",
-                lat: 40.71653978,
-                lng: -74.04963791,
-            },
-            {
-                id: 3206,
-                name: "Hilltop",
-                lat: 40.7311689,
-                lng: -74.0575736,
-            },
-            {
-                id: 3207,
-                name: "Oakland Ave",
-                lat: 40.7376037,
-                lng: -74.0524783,
-            },
-            {
-                id: 3209,
-                name: "Brunswick St",
-                lat: 40.7241765,
-                lng: -74.0506564,
-            },
-            {
-                id: 3210,
-                name: "Pershing Field",
-                lat: 40.74267714,
-                lng: -74.05178863,
-            },
-            {
-                id: 3211,
-                name: "Newark Ave",
-                lat: 40.72152515,
-                lng: -74.04630454,
-            },
-            {
-                id: 3212,
-                name: "Christ Hospital",
-                lat: 40.73478582,
-                lng: -74.05044364,
-            },
-            {
-                id: 3213,
-                name: "Van Vorst Park",
-                lat: 40.71848892,
-                lng: -74.04772663,
-            },
-            {
-                id: 3214,
-                name: "Essex Light Rail",
-                lat: 40.7127742,
-                lng: -74.0364857,
-            },
-            {
-                id: 3215,
-                name: "Central Ave",
-                lat: 40.7467299,
-                lng: -74.0492509,
-            },
-            {
-                id: 3216,
-                name: "Columbia Park",
-                lat: 40.6970299,
-                lng: -74.0969366,
-            },
-            {
-                id: 3217,
-                name: "Bayside Park",
-                lat: 40.69865054,
-                lng: -74.08207968,
-            },
-            {
-                id: 3220,
-                name: "5 Corners Library",
-                lat: 40.73496102,
-                lng: -74.05950308,
-            },
-            {
-                id: 3225,
-                name: "Baldwin at Montgomery",
-                lat: 40.7236589,
-                lng: -74.0641943,
-            },
-        ],
+        stations: null,
         selectedStation: "ALL",
         trips: [],
         stationsArray: [],
@@ -308,6 +55,14 @@ var appVue = new Vue({
         /*
          * STATION
          */
+        initStations: function () {
+            $.getJSON("https://salesmendesandre.github.io/bikevis/data/stations.json", function (data) {
+                appVue.stations = data;
+                appVue.makeVectorStations();
+                appVue.initTrips();
+
+            });
+        },
         getStation: function (id) {
             for (var i = 0; i < this.stations.length; i++) {
                 if (this.stations[i].id == id) {
@@ -365,16 +120,23 @@ var appVue = new Vue({
             marker.closePopup();
             marker._popup.setContent('' +
                 '<div style="width: 250px;">' +
-                '   <h3>'+ station.name +'</h3>'+
-                '   <h5><b>Position:</b></h5>'+
-                '       <h6 style="margin-left: 15px"><b>Lat: </b>' + station.lat + '</h6>'+
-                '       <h6 style="margin-left: 15px"><b> Lng: </b>' + station.lng +'</h6>'+
+                '   <h3>' + station.name + '</h3>' +
+                '   <h5><b>Position:</b></h5>' +
+                '       <h6 style="margin-left: 15px"><b>Lat: </b>' + station.lat + '</h6>' +
+                '       <h6 style="margin-left: 15px"><b> Lng: </b>' + station.lng + '</h6>' +
                 '   <h5><b>Trips:</b></h5>' +
-                '       <h5 style="margin-left: 15px"><img src="img/sign-in.png" style="width: 20px"> ' + this.totalTripsIn(station.id) +'</h5>'+
-                '       <h5 style="margin-left: 15px"><img src="img/sign-out.png" style="width: 20px"> ' + this.totalTripsOut(station.id) +'</h5>'+
+                '       <h5 style="margin-left: 15px"><img src="img/sign-in.png" style="width: 20px"> ' + this.totalTripsIn(station.id) + '</h5>' +
+                '       <h5 style="margin-left: 15px"><img src="img/sign-out.png" style="width: 20px"> ' + this.totalTripsOut(station.id) + '</h5>' +
+                '   <button class="btn pull-right" onClick="appVue.selectStation(\''+station.name+'\')">Select Station</button>' +
+                '   <div class="clearfix"></div>'+
                 '</div>'
             );
             marker.openPopup();
+        },
+        selectStation:function(name){
+            console.log("SelectStation:"+name);
+            this.selectedStation=name;
+          this.recalculate();
         },
         paintAllStations: function () {
             for (var i = 0; i < this.stations.length; i++) {
@@ -397,7 +159,7 @@ var appVue = new Vue({
         /*
         * TRIPS
         */
-        getTrips: function () {
+        initTrips: function () {
             $.getJSON("https://salesmendesandre.github.io/bikevis/data/01.json", function (data) {
                 appVue.trips = data;
                 appVue.setControls();
@@ -409,7 +171,7 @@ var appVue = new Vue({
             });
         },
         calculateTripsMatrix: function () {
-            console.log("Calculando Matrix");
+            console.log("calculateTripsMatrix()");
             var trips = this.trips;
             var currentMatrix = matrix(this.stationsArray.length, this.stationsArray.length, 0);
             var arrayStation = this.stationsArray;
@@ -456,7 +218,7 @@ var appVue = new Vue({
                 }
             }
             this.tripsMatrix = currentMatrix;
-            console.log("Fin calcular Matrix");
+            console.log("End calculateTripsMatrix");
         },
 
         totalTripsIn: function (id) {
@@ -487,7 +249,6 @@ var appVue = new Vue({
                     }
                 }
             }
-            console.log("maxVal", maxVal);
             for (var i = 0; i < opacityTripsMatrix.length; i++) {
                 for (var j = 0; j < opacityTripsMatrix[i].length; j++) {
                     if (!opacityTripsMatrix[i][j] == 0) {
@@ -531,7 +292,6 @@ var appVue = new Vue({
             this.recalculate();
         },
         recalculate: function () {
-            console.log("RECALCULANDO");
             this.removeAllLayersWithTag("STATION");
             this.removeAllLayersWithTag("LINE");
             if (this.selectedStation == "ALL") {
@@ -547,64 +307,60 @@ var appVue = new Vue({
             appVue.paintAllTrips();
         },
         setControls: function () {
-            try {
-                var startDay = this.trips[0]['Start Time'].split(" ")[0];
-                var startDate = new Date(Number(startDay.split('/')[2]), Number(startDay.split('/')[1]) - 1, Number(startDay.split('/')[0]));
 
-                $('#startDay').val(startDay);
-                var endDay = this.trips[this.trips.length - 1]['Start Time'].split(" ")[0];
-                var endDate = new Date(Number(endDay.split('/')[2]), Number(endDay.split('/')[1]) - 1, Number(endDay.split('/')[0]));
-                $('#endDay').val(endDay);
+            var startDay = this.trips[0]['Start Time'].split(" ")[0];
+            var startDate = new Date(Number(startDay.split('/')[2]), Number(startDay.split('/')[1]) - 1, Number(startDay.split('/')[0]));
 
-                $('#startDay').bootstrapMaterialDatePicker
-                ({
-                    weekStart: 0,
-                    format: 'DD/MM/YYYY',
-                    shortTime: true,
-                    time: false,
-                    minDate: startDate,
-                    maxDate: endDate
-                }).on('change', function (e, date) {
-                    $('#endDay').bootstrapMaterialDatePicker('setMinDate', date);
-                    appVue.recalculate();
-                });
+            $('#startDay').val(startDay);
+            var endDay = this.trips[this.trips.length - 1]['Start Time'].split(" ")[0];
+            var endDate = new Date(Number(endDay.split('/')[2]), Number(endDay.split('/')[1]) - 1, Number(endDay.split('/')[0]));
+            $('#endDay').val(endDay);
 
-                $('#endDay').bootstrapMaterialDatePicker
-                ({
-                    weekStart: 0,
-                    format: 'DD/MM/YYYY',
-                    shortTime: true,
-                    time: false,
-                    minDate: startDate,
-                    maxDate: endDate
-                }).on('change', function (e, date) {
-                    $('#startDay').bootstrapMaterialDatePicker('setMaxDate', date);
-                    appVue.recalculate();
-                });
+            $('#startDay').bootstrapMaterialDatePicker
+            ({
+                weekStart: 0,
+                format: 'DD/MM/YYYY',
+                shortTime: true,
+                time: false,
+                minDate: startDate,
+                maxDate: endDate
+            }).on('change', function (e, date) {
+                $('#endDay').bootstrapMaterialDatePicker('setMinDate', date);
+                appVue.recalculate();
+            });
 
-                $('#startHour').bootstrapMaterialDatePicker(
-                    {date: false, format: 'HH:mm'}
-                ).on('change', function (e, date) {
-                    $('#endHour').bootstrapMaterialDatePicker('setMinDate', date);
-                    appVue.recalculate();
-                });
+            $('#endDay').bootstrapMaterialDatePicker
+            ({
+                weekStart: 0,
+                format: 'DD/MM/YYYY',
+                shortTime: true,
+                time: false,
+                minDate: startDate,
+                maxDate: endDate
+            }).on('change', function (e, date) {
+                $('#startDay').bootstrapMaterialDatePicker('setMaxDate', date);
+                appVue.recalculate();
+            });
 
-                $('#endHour').bootstrapMaterialDatePicker(
-                    {date: false, format: 'HH:mm'}
-                ).on('change', function (e, date) {
-                    $('#startHour').bootstrapMaterialDatePicker('setMaxDate', date);
-                    appVue.recalculate();
-                });
-            } catch (ex) {
-                console.log(ex)
-            }
+            $('#startHour').bootstrapMaterialDatePicker(
+                {date: false, format: 'HH:mm'}
+            ).on('change', function (e, date) {
+                $('#endHour').bootstrapMaterialDatePicker('setMinDate', date);
+                appVue.recalculate();
+            });
+
+            $('#endHour').bootstrapMaterialDatePicker(
+                {date: false, format: 'HH:mm'}
+            ).on('change', function (e, date) {
+                $('#startHour').bootstrapMaterialDatePicker('setMaxDate', date);
+                appVue.recalculate();
+            });
         }
     }
 });
 
 appVue.initMap();
-appVue.makeVectorStations();
-appVue.getTrips();
+appVue.initStations();
 
 
 //TOOLS
