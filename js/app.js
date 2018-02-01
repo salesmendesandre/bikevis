@@ -194,8 +194,8 @@ var appVue = new Vue({
                 var tripEndHour = trips[i]["Stop Time"].split(" ")[1];
                 var tripEndDate = new Date(tripEndDay.split('/')[2], tripEndDay.split('/')[1] - 1, tripEndDay.split('/')[0]);
 
-                if (startSelectedDate < tripStartDate && tripEndDate < endSelectedDate) {
-                    if (startSelectedHour < tripStartHour && tripEndHour < endSelectedHour) {
+                if (startSelectedDate <= tripStartDate && tripEndDate <= endSelectedDate) {
+                    if (startSelectedHour <= tripStartHour && tripEndHour <= endSelectedHour) {
                         var startStationId = trips[i]['Start Station ID'];
                         var endStationId = trips[i]['End Station ID'];
                         var startStationIndex = arrayStation.indexOf(startStationId);
