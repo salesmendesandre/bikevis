@@ -56,7 +56,7 @@ var appVue = new Vue({
          * STATION
          */
         initStations: function () {
-            $.getJSON("https://salesmendesandre.github.io/bikevis/data/stations.json", function (data) {
+            $.getJSON("https://salesmendesandre.github.io/bikevis_web/data/stations.json", function (data) {
                 appVue.stations = data;
                 appVue.makeVectorStations();
                 appVue.initTrips();
@@ -160,7 +160,7 @@ var appVue = new Vue({
         * TRIPS
         */
         initTrips: function () {
-            $.getJSON("https://salesmendesandre.github.io/bikevis/data/01.json", function (data) {
+            $.getJSON("https://salesmendesandre.github.io/bikevis_web/data/01.json", function (data) {
                 appVue.trips = data;
                 appVue.setControls();
                 appVue.calculateTripsMatrix();
